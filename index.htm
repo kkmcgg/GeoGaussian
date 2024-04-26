@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>3D Globe</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
+    <script>
+        // Create a scene
+        const scene = new THREE.Scene();
+
+        // Create a camera
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        // Create a renderer
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Create a geometry for the globe
+        const geometry = new THREE.SphereGeometry(2, 32, 32);
+
+        // Create an array to store random colors for each vertex
+        const colors = [];
+
+        // Assign random colors to each vertex
+        geometry.vertices.forEach(() => {
+            const color = new THREE.Color(Math.random(), Math.random(), Math.random());
+            colors.push(color);
+        });
+
+        // Set the vertex colors for the geometry
+        geometry.colors = colors;
+
+        // Create a material for the globe with vertex colors
+        const material = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors });
+
+        // Create a mesh and add it to the scene
+        const globe = new THREE.Mesh(geometry, material);
+        scene.add(globe);
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            globe.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
